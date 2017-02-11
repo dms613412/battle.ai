@@ -13,12 +13,10 @@ sys.path.insert(0, '../')
 # TODO : find out how to control path and error
 
 from server.handler.playerhandler import PlayerHandler
-from server.handler.webhandler import WebServer
-from server.handler.webhandler import ObserverHandler, LogHandler
+from server.handler.webpagehandler import WebServer
+from server.handler.observerhandler import ObserverHandler
+from server.handler.webpagehandler import TestHandler
 from server.conf.conf_reader import ConfigReader
-
-TCP_PORT = 9001
-WEB_PORT = 9000
 
 
 class MainServer:
@@ -40,8 +38,8 @@ class MainServer:
         self.app = tornado.web.Application(
             [
                 (r"/websocket", ObserverHandler, dict(player_list=self.player_list, attendee_list=self.attendee_list, database=db)),
-                (r'/log', LogHandler, dict(database_driver=db)),
                 (r"/", WebServer),
+                (r"/test", TestHandler),
             ],
             template_path=os.path.join(os.path.dirname(__file__), "./templates"),
             static_path=os.path.join(os.path.dirname(__file__), "./static"),
