@@ -8,11 +8,10 @@ PORT = 9090
 class MongoDBHandler(DBHandler):
     def __init__(self):
         self.conn = pymongo.MongoClient(IP, PORT)
-        self.db = self.conn.playgrounddb
-
+        self.db = self.conn.playgroundDB
         pass
 
     def init_db(self):
         self.users = self.db.users
         self.game_log_list = self.db.game_log_list
-    pass
+        pass

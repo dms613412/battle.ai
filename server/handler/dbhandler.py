@@ -35,7 +35,7 @@ import json
 
 
 class DBHandler(object):
-    def __init__(self):
+    def __init__(self, ):
         self.conn = None
         self.db = None
 
@@ -45,7 +45,12 @@ class DBHandler(object):
 
     def insert_user(self, user):
         pass
-    pass
+
+    def update_game_log(self, game_result, user):
+        pass
+
+    def update_user_gamelog(self, game_log):
+        pass
 
 dbh = DBHandler()
 print(json.dumps(dbh.__dict__))

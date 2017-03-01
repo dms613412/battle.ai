@@ -12,14 +12,14 @@ from server.gameobject.user import Observer
 
 class ObserverHandler(tornado.websocket.WebSocketHandler):
 
-    def initialize(self, attendee_list=dict(), player_list=dict(), database=None):
+    def initialize(self, observer_list=dict(), player_list=dict(), database=None):
         '''
 
-        :param attendee_list:
+        :param observer_list:
         :param player_list:
         :param gamehandler:
         '''
-        self.attendee_list = attendee_list  # dict() - key : conn
+        self.observer_list = observer_list  # dict() - key : conn
         self.player_list = player_list  # dict() - key : user_id\
         self.database = database
 
@@ -29,13 +29,13 @@ class ObserverHandler(tornado.websocket.WebSocketHandler):
         '''
         open websocket
         '''
-        new_attendee = Observer(self)
-        self.attendee_list[self] = new_attendee
+        new_observer = Observer(self)
+        self.observer_list[self] = new_observer
 
     def on_message(self, message):
         '''
-        When receive message from Attendee, this function runs.
-        :param message: message from Attendee
+        When receive message from Observer, this function runs.
+        :param message: message from Observer
         '''
         logging.debug(message)
         request = json.loads(message)
@@ -51,7 +51,7 @@ class ObserverHandler(tornado.websocket.WebSocketHandler):
             pass
 
     def _response_user_list(self):
-        self.attendee_list[self].attendee_flag = False
+        self.observer_list[self].observer_flag = False
 
         players = list(self.player_list.keys())
 
@@ -62,7 +62,7 @@ class ObserverHandler(tornado.websocket.WebSocketHandler):
             self.write_message(json_msg)
         except Exception as e:
             logging.error("error in response_user_list")
-            self.attendee_list.pop(self)
+            self.observer_list.pop(self)
 
     def _response_match(self, data):
         try:
@@ -72,12 +72,12 @@ class ObserverHandler(tornado.websocket.WebSocketHandler):
             logging.error(e)
             return
         for pid in data[USERS]:
-            for attendee in self.attendee_list.values():
-                attendee.notice_user_removed(pid)
+            for observer in self.observer_list.values():
+                observer.notice_user_removed(pid)
         try:
-            room = Room(players, self.attendee_list[self])
+            room = Room(players, self.observer_list[self])
             # TODO: factory design is needed in here
-            game_server = TurnGameHandler(room, self.player_list, self.attendee_list, int(data[SPEED]))
+            game_server = TurnGameHandler(room, self.player_list, self.observer_list, int(data[SPEED]))
         except Exception as e:
             logging.error(e)
             logging.error("During making room, error is occured")
@@ -91,14 +91,14 @@ class ObserverHandler(tornado.websocket.WebSocketHandler):
 
         try:
             self.write_message(json_msg)
-            self.attendee_list[self].room_enter()
+            self.observer_list[self].room_enter()
         except Exception as e:
             logging.error(e)
-            self.attendee_list.pop(self)
+            self.observer_list.pop(self)
 
     # TODO : find out how to deal with this error (CORS)
     def check_origin(self, origin):
         return True
 
     def on_close(self):
-        self.attendee_list.pop(self)
+        self.observer_list.pop(self)

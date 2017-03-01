@@ -15,10 +15,10 @@ from server.gameobject.user import Player
 
 
 class PlayerHandler(tornado.tcpserver.TCPServer):
-    def __init__(self, attendee_list, player_list):
+    def __init__(self, observer_list, player_list):
         tornado.tcpserver.TCPServer.__init__(self)
         self.player_list = player_list
-        self.attendee_list = attendee_list
+        self.observer_list = observer_list
 
     def handle_stream(self, stream, address):
         '''
@@ -27,7 +27,7 @@ class PlayerHandler(tornado.tcpserver.TCPServer):
         :param stream: ai client's stream
         :param address:  ai client's ip address
         '''
-        logging.debug("accept client is done")
+        logging.debug("player accepted")
         tornado.ioloop.IOLoop.current().spawn_callback(self.__accept_handler, stream)
 
     @gen.coroutine
@@ -65,8 +65,8 @@ class PlayerHandler(tornado.tcpserver.TCPServer):
             logging.info(username + " enter BATTLE.AI")
 
             self.player_list[username] = player
-            for attendee in self.attendee_list.values():
-                attendee.notice_user_added(username)
+            for observer in self.observer_list.values():
+                observer.notice_user_added(username)
 
             on_close_func = functools.partial(self._on_close, username)
             stream.set_close_callback(on_close_func)
@@ -87,5 +87,5 @@ class PlayerHandler(tornado.tcpserver.TCPServer):
         except Exception:
             pass
 
-        for attendee in self.attendee_list.values():
-            attendee.notice_user_removed(username)
+        for observer in self.observer_list.values():
+            observer.notice_user_removed(username)

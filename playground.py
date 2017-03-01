@@ -25,13 +25,13 @@ class Playground(tornado.web.Application):
         # TODO: game_logic selection must be added, tcp_port, web_port, playing game will be argument of playground.py
 
         self.player_list = dict()
-        self.attendee_list = dict()
+        self.observer_list = dict()
 
-        self.tcp_server = PlayerHandler(self.attendee_list, self.player_list)
+        self.tcp_server = PlayerHandler(self.observer_list, self.player_list)
         self.db = pymongo.MongoClient()
 
         self.handler = [
-            (r"/websocket", ObserverHandler, dict(player_list=self.player_list, attendee_list=self.attendee_list, database=self.db)),
+            (r"/websocket", ObserverHandler, dict(player_list=self.player_list, attendee_list=self.observer_list, database=self.db)),
             (r"/", HomeHandler),
             (r"/mypage", MyPageHandler),
             (r"/playground", PlaygroundHandler),
