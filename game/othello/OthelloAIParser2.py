@@ -95,5 +95,5 @@ class OthelloAIParser2(AIParser):
         for y in range(8):
             for x in range(8):
                 sys.stdout.write(board[x][y] + ' ')
-            print ''
-        print '#' * 39
+            print ('')
+        print ('#' * 39)

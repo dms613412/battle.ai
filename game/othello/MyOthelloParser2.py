@@ -17,7 +17,7 @@ class MyOthelloParser2(OthelloAIParser2):
         black = self.game_data['black']
         white = self.game_data['white']
 
-        print black, white, board
+        print (black, white, board)
 
         # 이제 이 부가정보들을 가지고 논리를 진행하도록 하자.
         valid_moves = self.get_valid_moves(board, black, white, self.pid)

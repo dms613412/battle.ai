@@ -7,17 +7,18 @@ playground is ai battle framework for
 
 import os.path
 import sys
+
+import pymongo
 import tornado.ioloop
 import tornado.options
 import tornado.web
-import pymongo
+
 sys.path.insert(0, '../')
 # TODO : find out how to control path and error
 
 from server.handler.playerhandler import PlayerHandler
 from server.handler.observerhandler import ObserverHandler
-from server.conf.conf_reader import ConfigReader
-from server.handler.webpagehandler import *
+from webpagehandler import *
 
 
 class Playground(tornado.web.Application):
@@ -32,18 +33,18 @@ class Playground(tornado.web.Application):
 
         self.handler = [
             (r"/websocket", ObserverHandler, dict(player_list=self.player_list, attendee_list=self.observer_list, database=self.db)),
-            (r"/", HomeHandler),
+            # (r"/", HomeHandler),
             (r"/mypage", MyPageHandler),
             (r"/playground", PlaygroundHandler),
-            (r"/auth/create", AuthCreateHandler),
-            (r"/auth/login", AuthLoginHandler),
-            (r"/auth/logout", AuthLogoutHandler),
+            # (r"/auth/create", AuthCreateHandler),
+            # (r"/auth/login", AuthLoginHandler),
+            # (r"/auth/logout", AuthLogoutHandler),
         ]
         self.setting = dict(
             blog_title=u"Battle.ai",
             template_path=os.path.join(os.path.dirname(__file__), "templates"),
             static_path=os.path.join(os.path.dirname(__file__), "static"),
-            ui_modules={"Entry": EntryModule},
+            #ui_modules={"Entry": EntryModule},
             xsrf_cookies=True,
             cookie_secret="secret_code",
             login_url="/auth/login",

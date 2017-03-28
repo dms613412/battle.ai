@@ -29,27 +29,41 @@ ex) findViewById ...
 * loser: loser's _id list
 * drawers: drawer's _id list
 
+Copyright by junsu
 """
 
 import json
 
 
 class DBHandler(object):
-    def __init__(self, ):
+    def __init__(self):
         self.conn = None
         self.db = None
 
         self.users = None
-        self.game_log_list = None
-        pass
+        self.game_log_list = []
+
 
     def insert_user(self, user):
+        raise Exception
+
+    def update_user_info(self):
         pass
 
     def update_game_log(self, game_result, user):
-        pass
+        raise Exception
 
     def update_user_gamelog(self, game_log):
+        raise Exception
+
+    def search_log(self):
+        pass
+
+
+    def putout(self):
+        """
+        for counting game logs
+        """
         pass
 
 dbh = DBHandler()
