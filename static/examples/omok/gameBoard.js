@@ -6,10 +6,13 @@ GameBoard.interval = -1;
 
 GameBoard.players = [];
 GameBoard.board = [];
+
+GameBoard.history = [];
 //================================================================================
 GameBoard.gameStart = function(JSON_data) {
     resizeCanvas(GameBoard.canvas);
     var game_data = JSON_data.data;
+    GameBoard.history = [];
     for (var key in game_data) {
         var player = [];
         player.push(key);

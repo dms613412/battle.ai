@@ -1,5 +1,6 @@
 from gamebase.client.ConnectionHandler import ConnectionHandler
 from gamebase.client.string import *
+import uuid
 
 
 ADDRESS = "127.0.0.1"
@@ -34,6 +35,7 @@ class Player(object):
 
     def play_game(self):
         while not self.is_end:
+            print("waiting ...")
             message = self.conn.receive_data()
             print(message)
             if message[MSG_TYPE] == END:
@@ -46,6 +48,7 @@ class Player(object):
     def run(self):
         while True:
             self.play_game()
+            self.is_end = False
 
     def print_end_status(self, status):
         if status is 0:
@@ -60,7 +63,7 @@ class Player(object):
             print("unexpected error occur")
 
 
-def play(game_logic):
+def play(game_logic, name=None):
     player = Player()
     player.learn_logic(game_logic)
     if not player.logic:
@@ -71,10 +74,15 @@ def play(game_logic):
         return
 
     while True:
-        username = input("Input your name: ")
+        # username = input("Input your name: ")
+        if name is None:
+            username = str(uuid.uuid4())
+        else:
+            username = name
         if player.confirm_username(username):
             print("Success in registering user name")
             break
         else:
+            name = None
             print("Failure to register user name")
     player.run()

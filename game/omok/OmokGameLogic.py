@@ -8,13 +8,17 @@ import game.debugger as logging
 
 sys.path.insert(0, '../')
 
+END_POINT = 6
+CHECK_POINT = END_POINT - 1
+
+INIT_BOARD_WIDTH = 10
 
 class OMOKGameLogic(TurnGameLogic):
     def __init__(self, game_server):
         super(OMOKGameLogic, self).__init__(game_server)
         logging.debug('GameLogic : INIT')
-        self.width = 5
-        self.height = 5
+        self.width = INIT_BOARD_WIDTH
+        self.height = INIT_BOARD_WIDTH
         self.board = [[0 for x in range(self.width)] for y in range(self.height)]
 
     def on_ready(self, pid_list):
@@ -68,7 +72,7 @@ class OMOKLoopPhase(Phase):
 
     def on_start(self):
         super(OMOKLoopPhase, self).on_start()
-        logging.debug('PHASE_LOOP : START')
+        logging.info('PHASE_LOOP : START')
 
         # Init data
         self.player_list = self.get_player_list()
@@ -132,7 +136,7 @@ class OMOKLoopPhase(Phase):
         self.notify("loop", notify_dict)
 
     def request_to_client(self):
-        logging.debug('Request ' + self.now_turn() + '\'s decision')
+        logging.info('Request ' + self.now_turn() + '\'s decision')
         info_dict = {
             'board': self.board
         }
@@ -162,13 +166,13 @@ class OMOKLoopPhase(Phase):
         return {"type": 101}
 
     def check_five(self, color, x_pos, y_pos):
-        if self.add_one(color, x_pos, y_pos, -1, -1) + self.add_one(color, x_pos, y_pos, 1, 1) == 4:
+        if self.add_one(color, x_pos, y_pos, -1, -1) + self.add_one(color, x_pos, y_pos, 1, 1) == CHECK_POINT:
             return True
-        if self.add_one(color, x_pos, y_pos, 0, -1) + self.add_one(color, x_pos, y_pos, 0, 1) == 4:
+        if self.add_one(color, x_pos, y_pos, 0, -1) + self.add_one(color, x_pos, y_pos, 0, 1) == CHECK_POINT:
             return True
-        if self.add_one(color, x_pos, y_pos, 1, -1) + self.add_one(color, x_pos, y_pos, -1, 1) == 4:
+        if self.add_one(color, x_pos, y_pos, 1, -1) + self.add_one(color, x_pos, y_pos, -1, 1) == CHECK_POINT:
             return True
-        if self.add_one(color, x_pos, y_pos, -1, 0) + self.add_one(color, x_pos, y_pos, 1, 0) == 4:
+        if self.add_one(color, x_pos, y_pos, -1, 0) + self.add_one(color, x_pos, y_pos, 1, 0) == CHECK_POINT:
             return True
 
     def add_one(self, color, x_pos, y_pos, x_dir, y_dir):

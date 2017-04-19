@@ -11,25 +11,26 @@ import server.debugger as logging
 
 
 class TurnGameHandler(GameHandler):
-    def __init__(self, room, players, observers, game_speed, game_logic = None, database = None):
+    def __init__(self, room, players, observers):
         game_logic = OMOKGameLogic(self)
         super(TurnGameHandler, self).__init__(room, players, observers, game_logic)
 
     @gen.coroutine
     def _play_handler(self):
-        logging.debug("play handler is called")
+        logging.info("play handler is called")
         try:
+            print(self.pid_list)
             self.game_logic.on_ready(self.pid_list)
-            logging.debug("on ready is done")
+            logging.info("on ready is done")
             yield self.request_ready()
-            logging.debug("request for ready is done")
+            logging.info("request for ready is done")
 
             self.game_logic.on_start()
-            logging.debug("on start is done")
+            logging.info("on start is done")
             while not self.game_end:
                 message = yield self.played.timeout_read()
                 yield self.delay_action()
-                logging.debug("received data: " + str(message))
+                logging.info("received data: " + str(message))
                 message = json.loads(message)
                 # TODO: message type check is in dude's code (callback function)
                 if message[MSG_TYPE] == self.current_msg_type:
@@ -48,6 +49,7 @@ class TurnGameHandler(GameHandler):
             self.handle_game_end(UNEXPECTED_ERROR, {})
 
     def request(self, pid, msg_type, data):
+        logging.info("what??")
         """
         callback function
         game logic call this function to request player's response

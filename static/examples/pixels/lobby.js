@@ -288,4 +288,3 @@ $("#id_searchTab_btn").bind('click', function() {
     $("#id_log").css('display','none');
     $("#id_search").css('display','flex');
 });
-

@@ -3,7 +3,7 @@ import logging
 FLAG = "[GAME]"
 BLANK = " "
 
-logging.basicConfig(level=logging.DEBUG)
+logging.basicConfig(level=logging.INFO)
 
 def info(msg):
     logging.info(FLAG+BLANK+str(msg))

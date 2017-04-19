@@ -5,7 +5,7 @@ import tornado.ioloop
 from functools import partial
 import server.debugger as logging
 
-buffer_size = 512
+buffer_size = 1024
 
 
 class User:

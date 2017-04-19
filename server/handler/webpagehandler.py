@@ -2,7 +2,7 @@ import tornado.web
 from tornado import gen
 import server.debugger as logging
 import os
-import bcrypt
+# import bcrypt
 import concurrent.futures
 # import MySQLdb
 # import markdown
