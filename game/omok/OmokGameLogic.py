@@ -101,6 +101,8 @@ class OMOKLoopPhase(Phase):
         x_pos = dict_data['x']
         y_pos = dict_data['y']
 
+        addition = [x_pos, y_pos]
+
         # Check Valid Action
         result = self.check_game_end(validate_user, x_pos, y_pos)
 
@@ -127,7 +129,7 @@ class OMOKLoopPhase(Phase):
 
         # normal Flow
         self.change_turn()
-        self.request_to_client()
+        self.request_to_client(addition=addition)
 
     def notify_to_front(self):
         notify_dict = {
@@ -135,10 +137,21 @@ class OMOKLoopPhase(Phase):
         }
         self.notify("loop", notify_dict)
 
-    def request_to_client(self):
+    def request_to_client(self, **kwargs):
+        print("EEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEe")
+        if "addition" in kwargs:
+            x = kwargs["addition"][0]
+            y = kwargs["addition"][1]
+        else:
+            x = -1
+            y = -1
         logging.info('Request ' + self.now_turn() + '\'s decision')
         info_dict = {
-            'board': self.board
+            'board': self.board,
+            'addition': {
+                'x': x,
+                'y': y
+            }
         }
         self.request(self.now_turn(), info_dict)
 

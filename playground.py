@@ -16,9 +16,7 @@ sys.path.insert(0, '../')
 # TODO : find out how to control path and error
 from server.command.supervisor import *
 from server.handler.playerhandler import PlayerHandler
-from server.handler.observerhandler import ObserverHandler
 from server.conf.conf_reader import ConfigReader
-from server.handler.webpagehandler import *
 
 
 player_list = dict()

@@ -19,8 +19,6 @@ players = None
 
 WRONG_COMMAND = "WRONG COMMAND"
 
-
-
 controled_process = []
 
 def start_commandline(player_list=None):

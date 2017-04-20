@@ -28,7 +28,7 @@ class TurnGameHandler(GameHandler):
             self.game_logic.on_start()
             logging.info("on start is done")
             while not self.game_end:
-                message = yield self.played.timeout_read()
+                message = yield self.played.read()
                 yield self.delay_action()
                 logging.info("received data: " + str(message))
                 message = json.loads(message)
@@ -46,10 +46,10 @@ class TurnGameHandler(GameHandler):
             self.handle_game_end(CONNECTION_LOST, {})
         except Exception as e:
             logging.error(type(e))
+            e.with_traceback(self)
             self.handle_game_end(UNEXPECTED_ERROR, {})
 
     def request(self, pid, msg_type, data):
-        logging.info("what??")
         """
         callback function
         game logic call this function to request player's response
@@ -57,6 +57,11 @@ class TurnGameHandler(GameHandler):
         :param msg_type: message type
         :param data: message data
         """
+        try:
+            position = data["addition"]
+            self.history.append(position)
+        except Exception:
+            pass
 
         for p in self.room.player_list:
             if p.get_pid() == pid:

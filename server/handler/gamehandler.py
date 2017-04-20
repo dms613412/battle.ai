@@ -4,7 +4,8 @@ import json
 from server.string import *
 
 import server.debugger as logging
-
+import server.coach.GUI_Coach
+from multiprocessing import Process
 """
 GameServer (for all games, abstract class)
 
@@ -32,6 +33,8 @@ class GameHandler:
         self.game_end = False
 
         self.played = None  # player currently finished turn
+
+        self.history = []
 
     @gen.coroutine
     def run(self):
@@ -141,6 +144,9 @@ class GameHandler:
 
         for player in self.room.player_list:
             player.room_out()
+
+        p = Process(target=server.coach.GUI_Coach.start_game, args=(self.history, ))
+        p.start()
 
     @gen.coroutine
     def delay_action(self):
