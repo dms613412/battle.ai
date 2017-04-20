@@ -109,7 +109,7 @@ class Client(object):
                 self.__remain_packet = game_data[i + 1:]
                 game_data = game_data[:i + 1]
                 logging.debug('cut game_data')
-                logging.debug(game_data)
+                # logging.debug(game_data)
                 decoding_data = json.loads(game_data)
                 return decoding_data
             # 딱 떨어지는 JSON 을 받음
@@ -198,7 +198,7 @@ class Client(object):
                 # print(decoding_data['data'])
                 continue
             send_msg = self._parser.parsing_data(decoding_data)
-            logging.debug(send_msg)
+            # logging.debug(send_msg)
             self.send_game_data(send_msg)
 
     # 언제 while 루프를 벗어날까? 그런 신호가 하나 필요하겠다.??

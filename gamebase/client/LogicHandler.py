@@ -10,7 +10,7 @@ class LogicHandler(object):
         msg_type = received_msg[MSG_TYPE]
         message = received_msg[DATA]
 
-        print(msg, msg_type, message)
+        # print(msg, msg_type, message)
         if msg == GAME_HANDLER:
             if msg_type == READY:
                 msg_type, data = self.init_phase(msg_type, message)
@@ -23,7 +23,7 @@ class LogicHandler(object):
         else:
             print("Unexpected message is come from server")
             return
-        print(message)
+        # print(message)
         return message
 
     def init_phase(self, msg_type, data):

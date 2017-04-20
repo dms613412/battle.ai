@@ -46,7 +46,7 @@ class OMOKParser(AIParser):
 
     def parsing_data(self, decoding_data):
         base = super(OMOKParser, self).parsing_data(decoding_data)
-        logging.debug(str(decoding_data))
+        # logging.debug(str(decoding_data))
         ret = None
 
         if self.msg_type == 'loop':

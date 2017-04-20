@@ -68,7 +68,7 @@ class Observer(User):
 
         msg = {MSG: NOTICE_USER_ADDED, USER: added_player}
         json_msg = json.dumps(msg)
-        logging.info(json)
+        # logging.info(json)
 
         self.send(json_msg)
 

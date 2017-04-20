@@ -17,20 +17,19 @@ class TurnGameHandler(GameHandler):
 
     @gen.coroutine
     def _play_handler(self):
-        logging.info("play handler is called")
+        logging.debug("play handler is called")
         try:
-            print(self.pid_list)
             self.game_logic.on_ready(self.pid_list)
-            logging.info("on ready is done")
+            logging.debug("on ready is done")
             yield self.request_ready()
-            logging.info("request for ready is done")
+            logging.debug("request for ready is done")
 
             self.game_logic.on_start()
-            logging.info("on start is done")
+            logging.debug("on start is done")
             while not self.game_end:
                 message = yield self.played.read()
                 yield self.delay_action()
-                logging.info("received data: " + str(message))
+                # logging.debug("received data: " + str(message))
                 message = json.loads(message)
                 # TODO: message type check is in dude's code (callback function)
                 if message[MSG_TYPE] == self.current_msg_type:

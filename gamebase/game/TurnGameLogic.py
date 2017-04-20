@@ -96,7 +96,7 @@ class TurnGameLogic(object):
         :param result_list:
         :return:
         """
-        logging.debug(result_list)
+        # logging.debug(result_list)
         self._game_server.on_end(error_code, result_list)
 
     def append_phase(self, phase):

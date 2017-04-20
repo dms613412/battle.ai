@@ -138,14 +138,13 @@ class OMOKLoopPhase(Phase):
         self.notify("loop", notify_dict)
 
     def request_to_client(self, **kwargs):
-        print("EEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEe")
         if "addition" in kwargs:
             x = kwargs["addition"][0]
             y = kwargs["addition"][1]
         else:
             x = -1
             y = -1
-        logging.info('Request ' + self.now_turn() + '\'s decision')
+        # logging.info('Request ' + self.now_turn() + '\'s decision')
         info_dict = {
             'board': self.board,
             'addition': {
