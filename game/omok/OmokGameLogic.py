@@ -11,7 +11,7 @@ sys.path.insert(0, '../')
 END_POINT = 6
 CHECK_POINT = END_POINT - 1
 
-INIT_BOARD_WIDTH = 10
+INIT_BOARD_WIDTH = 19
 
 class OMOKGameLogic(TurnGameLogic):
     def __init__(self, game_server):
@@ -98,13 +98,28 @@ class OMOKLoopPhase(Phase):
             validate_user = 2
 
         # Player Action
-        x_pos = dict_data['x']
-        y_pos = dict_data['y']
+        first = dict_data["first"]
+        second = dict_data["second"]
 
-        addition = [x_pos, y_pos]
+        addition = []
+
+        x_pos = first['x']
+        y_pos = first['y']
+
+        addition.append(x_pos)
+        addition.append(y_pos)
 
         # Check Valid Action
         result = self.check_game_end(validate_user, x_pos, y_pos)
+
+        if result["type"] == 1:
+            x_pos = second["x"]
+            y_pos = second["y"]
+
+            addition.append(x_pos)
+            addition.append(y_pos)
+
+            result = self.check_game_end(validate_user, x_pos, y_pos)
 
         # Send to Front
         self.notify_to_front()
@@ -139,17 +154,23 @@ class OMOKLoopPhase(Phase):
 
     def request_to_client(self, **kwargs):
         if "addition" in kwargs:
-            x = kwargs["addition"][0]
-            y = kwargs["addition"][1]
+            x1 = kwargs["addition"][0]
+            y1 = kwargs["addition"][1]
+            x2 = kwargs["addition"][2]
+            y2 = kwargs["addition"][3]
         else:
-            x = -1
-            y = -1
+            x1 = -1
+            y1 = -1
+            x2 = -1
+            y2 = -1
         # logging.info('Request ' + self.now_turn() + '\'s decision')
         info_dict = {
             'board': self.board,
             'addition': {
-                'x': x,
-                'y': y
+                'x1': x1,
+                'y1': y1,
+                'x2': x2,
+                'y2': y2,
             }
         }
         self.request(self.now_turn(), info_dict)

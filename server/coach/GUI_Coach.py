@@ -25,7 +25,8 @@ class GameManager(object):
         self.draw_base_board()
         count = 0
         for turn in self.turns:
-            self.draw_stone(turn["x"], turn["y"], self.turn_color[count % 2])
+            self.draw_stone(turn["x1"], turn["y1"], self.turn_color[count % 2])
+            self.draw_stone(turn["x2"], turn["y2"], self.turn_color[count % 2])
             if count == self.turn_index: break
             count += 1
 

@@ -43,8 +43,19 @@ class CustomOMOKLogic(LogicHandler):
         """
         print(data)
         board = data[BOARD]
+        game_data = {}
 
         for x in range(self.width):
             for y in range(self.height):
                 if board[x][y] == 0:
-                    return msg_type, {"x": x, "y": y}
+                    game_data["first"] = {"x": x, "y": y}
+                    board[x][y] = self.my_color
+                    break
+
+        for x in range(self.width):
+            for y in range(self.height):
+                if board[x][y] == 0:
+                    game_data["second"] = {"x": x, "y": y}
+                    break
+
+        return msg_type, game_data

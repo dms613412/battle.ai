@@ -2,7 +2,7 @@ import json
 import socket
 from gamebase.client.string import *
 
-BUFFER_SIZE = 1024
+BUFFER_SIZE = 4986
 
 
 class ConnectionHandler(object):
